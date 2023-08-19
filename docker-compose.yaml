@@ -15,7 +15,20 @@ services:
       - .env
     networks:
       - data_network
-    
+
+  mc:
+      image: minio/mc
+      container_name: mc
+      hostname: mc
+      env_file: .env
+      entrypoint: /bin/sh -c " until (/usr/bin/mc config host add minio http://minio:9000
+        minio minio123) do echo '...waiting...' && sleep 1; done; /usr/bin/mc mb minio/lakehouse;
+        /usr/bin/mc policy set public minio/lakehouse; exit 0; "
+      depends_on:
+        - minio
+      networks:
+          - data_network
+
   spark-master:
     build:
       context: ./spark
