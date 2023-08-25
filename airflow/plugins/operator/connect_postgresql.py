@@ -6,7 +6,6 @@ from secrets import dbname, host, pg_password, pg_user, port
 
 import psycopg2
 
-
 class ConnectPostgres:
     def __init__(self):
         self.host = host
